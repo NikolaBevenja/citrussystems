@@ -1,0 +1,58 @@
+<?php $product = $this->getProduct() ?>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 offset-md-4">
+            <h1><?= $product['pdt_name'] ?></h1>
+            <h4><?= $product['pdt_description'] ?></h4>
+        </div>
+        <div class="col-md-4 offset-md-4">
+            <hr>
+            <h1>Komentari</h1>
+            <hr>
+            <form id="add_comment" action="">
+                <div class="form-group">
+                    <label for="cmt_email">Email address</label>
+                    <input type="email" class="form-control" id="cmt_email" name="cmt_email" aria-describedby="emailHelp" placeholder="Enter email">
+                </div>
+                <div class="form-group">
+                    <label for="cmt_name">Name</label>
+                    <input type="text" class="form-control" id="cmt_name" name="cmt_name" placeholder="Your Name">
+                </div>
+                <div class="form-group">
+                    <label for="cmt_text">Type a comment</label>
+                    <textarea class="form-control" id="cmt_text" name="cmt_text" rows="3" placeholder="Type something.."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Add</button>
+            </form>
+            <hr>
+            <?php foreach($this->getComments() as $comment): ?>
+            <p>customer: <?= $comment['cmt_name']?></p>
+            <p><?= $comment['cmt_text']?></p>
+            <hr>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</div>
+<style>
+    h1, h4 {
+        text-align: center;
+    }
+</style>
+<script>
+    $('#add_comment').submit(function (event) {
+        event.preventDefault();
+        let data = {};
+        data['cmt_email'] = $('#cmt_email').val();
+        data['cmt_name'] = $('#cmt_name').val();
+        data['cmt_text'] = $('#cmt_text').val();
+        data['pdt_id'] = <?= PATH[1] ?>;
+        remote('comment', 'add', successAdd, data);
+    });
+    function successAdd(content){
+        if(content != 0){
+            alert('Successfully sent request to approval!');
+        }else{
+            alert('Error! Unsuccessfully added comment to database');
+        }
+    }
+</script>

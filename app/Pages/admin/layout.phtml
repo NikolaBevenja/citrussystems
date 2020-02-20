@@ -1,0 +1,64 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-4" id="declined-wrap">
+            <h2>Declined</h2>
+            <hr>
+            <?php foreach ($this->getComments(2) as $d_comment): ?>
+            <div id="<?= $d_comment['cmt_id'] ?>" style="background: #E72309; padding: 10px; margin: 10px 0;">
+                <p><?= $d_comment['pdt_name']?></p>
+                <p><?= $d_comment['cmt_email'].' : '.$d_comment['cmt_name']?></p>
+                <p>Comment: <?= $d_comment['cmt_text'] ?></p>
+            </div>
+            <?php endforeach; ?>
+        </div>
+        <div class="col-md-4" id="onhold-wrap">
+            <h2>On Hold</h2>
+            <hr>
+            <?php foreach ($this->getComments(0) as $d_comment): ?>
+            <div id="<?= $d_comment['cmt_id'] ?>" style="padding: 10px; margin: 10px 0;">
+                <p><?= $d_comment['pdt_name']?></p>
+                <p><?= $d_comment['cmt_email'].' : '.$d_comment['cmt_name']?></p>
+                <p>Comment: <?= $d_comment['cmt_text'] ?></p>
+                <button onclick="accept(<?= $d_comment['cmt_id'] ?>)"><i class="fas fa-check"></i></button>
+                <button onclick="decline(<?= $d_comment['cmt_id'] ?>)"><i class="fas fa-times"></i></button>
+            </div>
+            <?php endforeach; ?>
+        </div>
+        <div class="col-md-4" id="accepted-wrap">
+            <h2>Accepted</h2>
+            <hr>
+            <?php foreach ($this->getComments(1) as $d_comment): ?>
+            <div id="<?= $d_comment['cmt_id'] ?>" style="background: #59BD29; padding: 10px; margin: 10px 0;">
+                <p><?= $d_comment['pdt_name']?></p>
+                <p><?= $d_comment['cmt_email'].' : '.$d_comment['cmt_name']?></p>
+                <p>Comment: <?= $d_comment['cmt_text'] ?></p>
+            </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</div>
+<script>
+    function accept(id){
+        let data = {};
+        data['cmt_id'] = id;
+        $('#onhold-wrap #'+id).remove();
+        remote('comment', 'accept', successAccept, data);
+    }
+    function successAccept(content){
+        if(content != 0){
+            $('#accepted-wrap').append(content);
+        }
+    }
+    function decline(id) {
+        let data = {};
+        data['cmt_id'] = id;
+        $('#onhold-wrap #'+id).remove();
+        remote('comment', 'decline', successDecline, data);
+    }
+    function successDecline(content){
+        console.log(content);
+        if(content != 0){
+            $('#declined-wrap').append(content);
+        }
+    }
+</script>

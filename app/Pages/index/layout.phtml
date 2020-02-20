@@ -1,0 +1,20 @@
+<div class="container">
+    <div class="row">
+        <?php foreach ($this->getProducts() as $product): ?>
+        <div class="col-md-4 col-sm-12">
+            <div class="card product" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title"><?= $product['pdt_name'] ?></h5>
+                    <p class="card-text"><?= $product['pdt_description'] ?></p>
+                    <a href="/product/<?= $product['pdt_id'] ?>" class="btn btn-primary">idi na product</a>
+                </div>
+            </div>
+        </div>
+        <?php endforeach; ?>
+    </div>
+</div>
+<style>
+    .product {
+        margin: 10px auto;
+    }
+</style>
